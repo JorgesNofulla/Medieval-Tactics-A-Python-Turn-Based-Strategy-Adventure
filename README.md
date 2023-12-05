@@ -2,10 +2,7 @@
 In progess.........
 initial overview :
 
-![image](https://github.com/JorgesNofulla/G_test/assets/113198223/39e660a7-9f51-408c-93ce-9ff30e152218)
+# Game interface overview 
 
 
-# smh 
-
-
-![image](https://github.com/JorgesNofulla/G_test/tree/main/assets/main_menu.PNG)
+![](/assets/main_menu.PNG)
