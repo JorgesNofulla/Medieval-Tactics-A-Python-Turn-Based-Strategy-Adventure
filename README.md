@@ -1,9 +1,10 @@
-# G_test
+# Python game test
 In progess.........
 initial overview :
 
 ## REPOSITORY IS NOT READY FOR USAGE, MANY COMPONENTS MISSING. WILL UPDATE SOON!
 # Game interface overview 
+# Delay caused by adding more mechanics 
 
 
 ![](/assets/main_menu.PNG)
