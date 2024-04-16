@@ -2,7 +2,6 @@
 In progess.........
 initial overview :
 
-## REPOSITORY IS NOT READY FOR USAGE, MANY COMPONENTS MISSING. WILL UPDATE SOON!
 # Game interface overview 
 # Delay caused by adding more mechanics 
 
