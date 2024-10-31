@@ -39,7 +39,7 @@ red = (0, 0, 0)
 green = (0, 255, 0)
 
 # start screen
-start_screen_background = pygame.image.load('C:/DevOps/Data/battle_g/main_menu.png').convert_alpha()
+start_screen_background = pygame.image.load('C:/DevOps/Code/assets/main_menu.png').convert_alpha()
 start_screen_background = pygame.transform.scale(start_screen_background, (screen_Width, screen_height))
 start_button_img = pygame.image.load('C:/DevOps/Data/battle_g/sb.png').convert_alpha()  # Load your start button image
 start_button = button.Button(screen, 300, 350, start_button_img, 200, 200)  # Adjust x_position, y_position, width, and height
