@@ -1,6 +1,12 @@
 # Python game test
 The game is in a working stage now. Feel free to copy the code and experiment with it :) 
 
+TO RUN THE GAME SIMPLY COPY THE CODE, INSTALL LIBRARIES AND RUN :
+
+```
+python battle_f.py
+```
+
 I plan to add some more fun functionalities in the future
 # Game interface overview 
 
