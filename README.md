@@ -1,10 +1,8 @@
 # Python game test
-In progess.........
-initial overview :
+The game is in a working stage now :) 
 
+I plan to add some more fun functionalities in the future
 # Game interface overview 
-# Delay caused by adding more mechanics 
-
 
 ![](/assets/main_menu.PNG)
 
