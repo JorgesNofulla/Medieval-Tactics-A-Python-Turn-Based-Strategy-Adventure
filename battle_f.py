@@ -2,7 +2,7 @@ import pygame
 import random
 import button
 import os
-
+from menu import start_screen
 pygame.init()
 clock = pygame.time.Clock()
 
@@ -35,14 +35,14 @@ FONT = pygame.font.SysFont('Times New Roman', 26)
 RED = (0, 0, 0)
 GREEN = (0, 255, 0)
 
+# Hover scale factor for buttons
+HOVER_SCALE_FACTOR = 0.5  # 10% larger
+
+
 # Define the assets folder path
 ASSETS_PATH = os.path.join(os.path.dirname(__file__), 'assets')
 
-# Start screen
-start_screen_background = pygame.image.load(os.path.join(ASSETS_PATH, 'main_menu.png')).convert_alpha()
-start_screen_background = pygame.transform.scale(start_screen_background, (SCREEN_WIDTH, SCREEN_HEIGHT))
-start_button_img = pygame.image.load(os.path.join(ASSETS_PATH, 'sb.png')).convert_alpha()
-start_button = button.Button(screen, 300, 350, start_button_img, 200, 200)
+
 
 # Load images
 background_img = pygame.image.load(os.path.join(ASSETS_PATH, 'backg.png')).convert_alpha()
@@ -238,25 +238,6 @@ class DamageText(pygame.sprite.Sprite):
         if self.counter > 30:
             self.kill()
 
-def start_screen():
-    clicked = False
-    while True:
-        screen.blit(start_screen_background, (0, 0))
-        if start_button.draw():
-            break
-        pos = pygame.mouse.get_pos()
-        if start_button.rect.collidepoint(pos):
-            pygame.mouse.set_visible(False)
-            screen.blit(cursor_img, pos)
-        else:
-            pygame.mouse.set_visible(True)
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                exit()
-            if event.type == pygame.MOUSEBUTTONDOWN and start_button.rect.collidepoint(pos):
-                clicked = True
-        pygame.display.update()
 
 damage_text_group = pygame.sprite.Group()
 
