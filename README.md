@@ -1,12 +1,13 @@
 # Python game test
-In progess.........
-initial overview :
+The game is in a working stage now. Feel free to copy the code and experiment with it :) 
 
+I plan to add some more fun functionalities in the future
 # Game interface overview 
-# Delay caused by adding more mechanics 
 
+![image](https://github.com/user-attachments/assets/f52b828a-d70a-48a7-abf5-4c747df7d976)
 
-![](/assets/main_menu.PNG)
+![image](https://github.com/user-attachments/assets/8d39530e-5ac5-45ca-bed0-47aea7cf8613)
+
 
 
 ## Acknowledgements
