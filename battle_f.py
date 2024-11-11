@@ -16,7 +16,7 @@ screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 pygame.display.set_caption('Battle')
 
 # Constants
-ACTION_WAIT_TIME = 10
+ACTION_WAIT_TIME = 30
 POTION_EFFECT = 15
 
 # Fighter stats
@@ -104,7 +104,7 @@ class Fighter():
             img = pygame.image.load(img_path).convert_alpha()
             img = pygame.transform.scale(
                 img,
-                (img.get_width() / 2, img.get_height() / 2)
+                (img.get_width() / 2.5, img.get_height() / 2.5)
                 if self.name == 'char'
                 else (img.get_width() * 3, img.get_height() * 3),
             )
@@ -118,7 +118,7 @@ class Fighter():
             img = pygame.image.load(img_path).convert_alpha()
             img = pygame.transform.scale(
                 img,
-                (img.get_width() / 2, img.get_height() / 2)
+                (img.get_width() / 2.5, img.get_height() / 2.5)
                 if self.name == 'char'
                 else (img.get_width() * 3, img.get_height() * 3),
             )
@@ -132,7 +132,7 @@ class Fighter():
             img = pygame.image.load(img_path).convert_alpha()
             img = pygame.transform.scale(
                 img,
-                (img.get_width() / 2, img.get_height() / 2)
+                (img.get_width() / 2.5, img.get_height() / 2.5)
                 if self.name == 'char'
                 else (img.get_width() * 3, img.get_height() * 3),
             )
@@ -146,7 +146,7 @@ class Fighter():
             img = pygame.image.load(img_path).convert_alpha()
             img = pygame.transform.scale(
                 img,
-                (img.get_width() / 2, img.get_height() / 2)
+                (img.get_width() / 2.5, img.get_height() / 2.5)
                 if self.name == 'char'
                 else (img.get_width() * 3, img.get_height() * 3),
             )
@@ -247,7 +247,7 @@ enemy1 = Fighter(500, 410, 'Bandit2', BANDIT_HP, BANDIT_STRENGTH, BANDIT_POTIONS
 enemy2 = Fighter(600, 410, 'Bandit2', BANDIT_HP, BANDIT_STRENGTH, BANDIT_POTIONS)
 
 # Initialize knight boosts
-knight_boosts = KNIGHT_BOOSTS
+knight_boosts = KNIGHT_BOOSTS  # Ensure KNIGHT_BOOSTS is defined before this line
 
 knight_health_bar = HealthBar(100, SCREEN_HEIGHT - BOTTOM_PANEL + 40, knight.hp, knight.max_hp)
 bandit1_health_bar = HealthBar(550, SCREEN_HEIGHT - BOTTOM_PANEL + 40, enemy1.hp, enemy1.max_hp)
@@ -260,8 +260,6 @@ potion_button = button.Button(screen, 100, SCREEN_HEIGHT - BOTTOM_PANEL + 70, po
 restart_button = button.Button(screen, 330, 120, restart_img, 120, 30)
 boost_button = button.Button(screen, 180, SCREEN_HEIGHT - BOTTOM_PANEL + 70, boost_img, 64, 64)
 
-start_screen()
-
 current_fighter = 1
 total_fighters = 3
 action_cooldown = 0
@@ -271,131 +269,146 @@ boost = False
 clicked = False
 game_over = 0
 
-run = True
-while run:
-    clock.tick(FPS)
-    draw_bg()
-    draw_panel()
-    knight_health_bar.draw(knight.hp)
-    bandit1_health_bar.draw(enemy1.hp)
-    bandit2_health_bar.draw(enemy2.hp)
+def run_single_battle_mode():
+    global knight_boosts
+    global game_over
+    global current_fighter
+    global action_cooldown
+    global attack
+    global potion
+    global boost
+    global clicked
 
-    knight.update()
-    knight.draw()
+    run = True
+    while run:
+        clock.tick(FPS)
+        draw_bg()
+        draw_panel()
+        knight_health_bar.draw(knight.hp)
+        bandit1_health_bar.draw(enemy1.hp)
+        bandit2_health_bar.draw(enemy2.hp)
 
-    for bandit in bandit_list:
-        bandit.update()
-        bandit.draw()
+        knight.update()
+        knight.draw()
 
-    damage_text_group.update()
-    damage_text_group.draw(screen)
+        for bandit in bandit_list:
+            bandit.update()
+            bandit.draw()
 
-    attack = False
-    potion = False
-    boost = False
-    target = None
-    pygame.mouse.set_visible(True)
-    pos = pygame.mouse.get_pos()
-    for count, bandit in enumerate(bandit_list):
-        if bandit.rect.collidepoint(pos):
-            pygame.mouse.set_visible(False)
-            screen.blit(sword_img, pos)
-            if clicked and bandit.alive:
-                attack = True
-                target = bandit_list[count]
+        damage_text_group.update()
+        damage_text_group.draw(screen)
 
-    if potion_button.draw():
-        potion = True
-
-    if boost_button.draw():
-        boost = True
-
-    draw_text(str(knight.potions), FONT, RED, 110, SCREEN_HEIGHT - BOTTOM_PANEL + 70)
-    draw_text(str(knight_boosts), FONT, GREEN, 190, SCREEN_HEIGHT - BOTTOM_PANEL + 70)
-
-    if game_over == 0:
-        if knight.alive:
-            if current_fighter == 1:
-                action_cooldown += 1
-                if action_cooldown >= ACTION_WAIT_TIME:
-                    if attack and target:
-                        knight.attack(target)
-                        current_fighter += 1
-                        action_cooldown = 0
-                    elif boost:
-                        if knight_boosts > 0:
-                            knight.strength += KNIGHT_BOOST_AMOUNT
-                            knight_boosts -= 1
-                            damage_text = DamageText(knight.rect.centerx, knight.rect.y, str(KNIGHT_BOOST_AMOUNT), RED)
-                            damage_text_group.add(damage_text)
-                            current_fighter += 1
-                            action_cooldown = 0
-                    elif potion:
-                        if knight.potions > 0:
-                            heal_amount = min(POTION_EFFECT, knight.max_hp - knight.hp)
-                            knight.hp += heal_amount
-                            knight.potions -= 1
-                            damage_text = DamageText(knight.rect.centerx, knight.rect.y, str(heal_amount), GREEN)
-                            damage_text_group.add(damage_text)
-                            current_fighter += 1
-                            action_cooldown = 0
-        else:
-            game_over = -1
-
+        attack = False
+        potion = False
+        boost = False
+        target = None
+        pygame.mouse.set_visible(True)
+        pos = pygame.mouse.get_pos()
         for count, bandit in enumerate(bandit_list):
-            if current_fighter == 2 + count:
-                if bandit.alive:
+            if bandit.rect.collidepoint(pos):
+                pygame.mouse.set_visible(False)
+                screen.blit(sword_img, pos)
+                if clicked and bandit.alive:
+                    attack = True
+                    target = bandit_list[count]
+
+        if potion_button.draw():
+            potion = True
+
+        if boost_button.draw():
+            boost = True
+
+        draw_text(str(knight.potions), FONT, RED, 110, SCREEN_HEIGHT - BOTTOM_PANEL + 70)
+        draw_text(str(knight_boosts), FONT, GREEN, 190, SCREEN_HEIGHT - BOTTOM_PANEL + 70)
+
+        if game_over == 0:
+            if knight.alive:
+                if current_fighter == 1:
                     action_cooldown += 1
                     if action_cooldown >= ACTION_WAIT_TIME:
-                        if (bandit.hp / bandit.max_hp) < 0.5 and bandit.potions > 0:
-                            heal_amount = min(POTION_EFFECT, bandit.max_hp - bandit.hp)
-                            bandit.hp += heal_amount
-                            bandit.potions -= 1
-                            damage_text = DamageText(bandit.rect.centerx, bandit.rect.y, str(heal_amount), GREEN)
-                            damage_text_group.add(damage_text)
+                        if attack and target:
+                            knight.attack(target)
                             current_fighter += 1
                             action_cooldown = 0
-                        else:
-                            bandit.attack(knight)
-                            current_fighter += 1
-                            action_cooldown = 0
-                else:
-                    current_fighter += 1
+                        elif boost:
+                            if knight_boosts > 0:
+                                knight.strength += KNIGHT_BOOST_AMOUNT
+                                knight_boosts -= 1
+                                damage_text = DamageText(knight.rect.centerx, knight.rect.y, str(KNIGHT_BOOST_AMOUNT), RED)
+                                damage_text_group.add(damage_text)
+                                current_fighter += 1
+                                action_cooldown = 0
+                        elif potion:
+                            if knight.potions > 0:
+                                heal_amount = min(POTION_EFFECT, knight.max_hp - knight.hp)
+                                knight.hp += heal_amount
+                                knight.potions -= 1
+                                damage_text = DamageText(knight.rect.centerx, knight.rect.y, str(heal_amount), GREEN)
+                                damage_text_group.add(damage_text)
+                                current_fighter += 1
+                                action_cooldown = 0
+            else:
+                game_over = -1
 
-        if current_fighter > total_fighters:
-            current_fighter = 1
+            for count, bandit in enumerate(bandit_list):
+                if current_fighter == 2 + count:
+                    if bandit.alive:
+                        action_cooldown += 1
+                        if action_cooldown >= ACTION_WAIT_TIME:
+                            if (bandit.hp / bandit.max_hp) < 0.5 and bandit.potions > 0:
+                                heal_amount = min(POTION_EFFECT, bandit.max_hp - bandit.hp)
+                                bandit.hp += heal_amount
+                                bandit.potions -= 1
+                                damage_text = DamageText(bandit.rect.centerx, bandit.rect.y, str(heal_amount), GREEN)
+                                damage_text_group.add(damage_text)
+                                current_fighter += 1
+                                action_cooldown = 0
+                            else:
+                                bandit.attack(knight)
+                                current_fighter += 1
+                                action_cooldown = 0
+                    else:
+                        current_fighter += 1
 
-        alive_bandits = sum(1 for bandit in bandit_list if bandit.alive)
-        if alive_bandits == 0:
-            game_over = 1
+            if current_fighter > total_fighters:
+                current_fighter = 1
 
-    if game_over != 0:
-        if game_over == 1:
-            screen.blit(victory_img, (250, 50))
-        elif game_over == -1:
-            screen.blit(defeat_img, (290, 50))
-        if restart_button.draw():
-            knight.reset()
-            for bandit in bandit_list:
-                bandit.reset()
-            current_fighter = 1
-            knight_boosts = KNIGHT_BOOSTS
-            action_cooldown = 0
-            game_over = 0
+            alive_bandits = sum(1 for bandit in bandit_list if bandit.alive)
+            if alive_bandits == 0:
+                game_over = 1
 
-    clicked = False
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            run = False
-        if event.type == pygame.MOUSEBUTTONDOWN:
-            clicked = True
+        if game_over != 0:
+            if game_over == 1:
+                screen.blit(victory_img, (250, 50))
+            elif game_over == -1:
+                screen.blit(defeat_img, (290, 50))
+            if restart_button.draw():
+                knight.reset()
+                for bandit in bandit_list:
+                    bandit.reset()
+                current_fighter = 1
+                knight_boosts = KNIGHT_BOOSTS  # Reset to initial boost count
+                action_cooldown = 0
+                game_over = 0
 
-    pygame.display.update()
+        clicked = False
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                run = False
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                clicked = True
 
-pygame.quit()
+        pygame.display.update()
 
+    pygame.quit()
 
+# Start the game
+game_mode = start_screen()  # Get the selected game mode
 
-#Hi.  I was wondering if it that can be expanded a bit with characters actually moving to each other for interactions?
-
-# test
+if game_mode == 'single_battle':
+    run_single_battle_mode()
+elif game_mode == 'tower_of_hell':
+    run_single_battle_mode()  # Change this to the correct function when implemented
+else:
+    print("Unknown game mode selected!")
+    pygame.quit()
