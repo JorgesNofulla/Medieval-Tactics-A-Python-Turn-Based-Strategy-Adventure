@@ -1,6 +1,12 @@
 # Python game test
 The game is in a working stage now. Feel free to copy the code and experiment with it :) 
 
+TO RUN THE GAME SIMPLY COPY THE CODE, INSTALL LIBRARIES AND RUN :
+
+```
+python battle_f.py
+```
+
 I plan to add some more fun functionalities in the future
 # Game interface overview 
 
@@ -16,3 +22,4 @@ This repository was created by [Jorges Nofulla](https://www.linkedin.com/in/jorg
 
 
 The base code, is inspired by [Russ](https://github.com/russs123/Battle)
+The images used are generated through ChatGPT :)
