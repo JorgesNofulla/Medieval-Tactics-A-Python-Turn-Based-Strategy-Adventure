@@ -16,7 +16,7 @@ screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 pygame.display.set_caption('Battle')
 
 # Constants
-ACTION_WAIT_TIME = 90
+ACTION_WAIT_TIME = 10
 POTION_EFFECT = 15
 
 # Fighter stats
