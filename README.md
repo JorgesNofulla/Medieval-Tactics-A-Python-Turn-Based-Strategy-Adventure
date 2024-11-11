@@ -22,3 +22,4 @@ This repository was created by [Jorges Nofulla](https://www.linkedin.com/in/jorg
 
 
 The base code, is inspired by [Russ](https://github.com/russs123/Battle)
+The images used are generated through ChatGPT :)
